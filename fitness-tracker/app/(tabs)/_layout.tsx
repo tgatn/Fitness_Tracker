@@ -3,6 +3,10 @@ import React from 'react'
 import { Tabs, Redirect } from 'expo-router'
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
+
+const Stack = createNativeStackNavigator();
 
 const TabsLayout = () => {
     return (
