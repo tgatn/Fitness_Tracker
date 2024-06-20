@@ -3,17 +3,15 @@ import React from 'react'
 import { ScrollView } from 'react-native-gesture-handler'
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { router } from 'expo-router';
 
-const workout = ({ navigation }) => {
+const workout = () => {
 
   const [workoutName, setWorkoutName] = React.useState('');
 
   return (
     <SafeAreaView>
       <ScrollView>
-        <Button title="Test" onPress={() => navigation.navigate('Home')} />
         {/* <Text>Enter Workout</Text> */}
         <TextInput
           style={styles.workout_input}
@@ -44,10 +42,8 @@ const workout = ({ navigation }) => {
   )
 }
 
-const gotoAddExercise = (name: string) => {
-  return (
-    console.log(name)
-  )
+export function gotoAddExercise(name: string) {
+  router.push({pathname: "/add_exercise", params: {name}});
 }
 
 export default workout
