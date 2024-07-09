@@ -1,10 +1,26 @@
 import { View, Text } from 'react-native'
 import React from 'react'
+import { useLocalSearchParams } from 'expo-router'
 
 const add_reps = () => {
+  const params = useLocalSearchParams();
+
+  const workoutName = params['workoutName'];
+
+  const exercise = {
+    name: String,
+    workoutSet: Number
+  }
+
+  const e = params['e'];
+
+  console.log(params)
+
   return (
     <View>
-      <Text>add_reps</Text>
+      <Text>{workoutName}</Text>
+      {e}
+      
     </View>
   )
 }

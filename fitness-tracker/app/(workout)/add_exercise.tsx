@@ -23,7 +23,6 @@ const add_exercise = () => {
   }
 
   const [exercises, setExercises] = React.useState<typeof exercise[]>([]);
-  console.log(exercises);
 
   const exerciseLimit = 10;
 
@@ -46,23 +45,25 @@ const add_exercise = () => {
 
   function gotoAddReps(exercises: typeof exercise[]) {
     const e = JSON.stringify(exercises); // converts JSON to string
-    router.push({pathname: "/add_reps", params: {e}});
+    router.push({pathname: "/add_reps", params: {e, workoutName}});
   }
 
   return (
     <ScrollView>
       <Text>Workout: {workoutName}</Text>
-      <Text>add_exercise</Text>
       <View style={styles.label_container}>
         <Text style={styles.label}>Exercise</Text>
         <Text style={styles.label}># of Sets</Text>
       </View>
+
+      {exercises.length === 0 && <Text >Add an exercise</Text>}
+
       <View style={styles.exercise_list_container}>
         {exercises.map((exercise, count) => (
 
           <View key={count} style={styles.exercise_container}>
             <TextInput style={styles.exercise_input} />
-            <TextInput style={styles.exercise_input} />
+            <TextInput style={styles.exercise_input} inputMode="numeric" />
             {/* <Text>HEY THE COUNT IS: {cou</Text> */}
           </View>
 
@@ -111,32 +112,27 @@ export default add_exercise
 
 const styles = StyleSheet.create({
   label_container: {
-    backgroundColor: 'pink',
     flexDirection: 'row',
     justifyContent: 'space-evenly'
   },
   label: {
-    fontSize: 16,
+    fontSize: 32,
     fontWeight: 'bold'
   },
   exercise_list_container: {
-    // backgroundColor: 'blue',
     flexDirection: 'column',
-    justifyContent: 'space-evenly',
-    // borderColor: 'black',
-    // borderWidth: 1
+    justifyContent: 'space-between',
+    // height: "50%"
   },
   exercise_container: {
-    // backgroundColor: 'blue',
     flexDirection: 'row',
     justifyContent: 'space-evenly',
-    // borderColor: 'black',
-    // borderWidth: 1
+    paddingTop: 20
   },
   exercise_input: {
     borderBottomWidth: 2,
     textAlign: 'center',
-
+    width: "40%"
   },
   steps_container: {
     marginTop: 250,
