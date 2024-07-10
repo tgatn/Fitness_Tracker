@@ -14,12 +14,17 @@ const add_reps = () => {
 
   const e = params['e'];
 
+  
+
+  
   console.log(params)
 
   return (
     <View>
       <Text>{workoutName}</Text>
-      {e}
+      <Text>{e}</Text>
+      
+      
       
     </View>
   )

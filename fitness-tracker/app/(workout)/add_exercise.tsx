@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet, Button, TextInput, ScrollView } from 'react-native'
 import React from 'react'
 import { useLocalSearchParams } from 'expo-router'
-import {  useFonts, Nunito_400Regular, Nunito_300Light, Nunito_700Bold } from '@expo-google-fonts/nunito';
+import { useFonts, Nunito_400Regular, Nunito_300Light, Nunito_700Bold } from '@expo-google-fonts/nunito';
 import { router } from 'expo-router';
 // import { Step_Counter } from '../../components/step_counter'
 
@@ -43,9 +43,25 @@ const add_exercise = () => {
     console.log(exercises);
   }
 
+  function updateExerciseList(value: any, count: number, isName: boolean) {
+    const newExercise = exercises[count];
+    (isName ? newExercise.name = value : newExercise.workoutSet = value)
+    const newExerciseList = exercises.map((e, c) => {
+      if (c === count) {
+        return newExercise;
+      } else {
+        return e;
+      }
+    });
+
+    setExercises(newExerciseList);
+    console.log(exercises);
+  }
+
   function gotoAddReps(exercises: typeof exercise[]) {
+    console.log(exercises);
     const e = JSON.stringify(exercises); // converts JSON to string
-    router.push({pathname: "/add_reps", params: {e, workoutName}});
+    router.push({ pathname: "/add_reps", params: { e, workoutName } });
   }
 
   return (
@@ -62,9 +78,17 @@ const add_exercise = () => {
         {exercises.map((exercise, count) => (
 
           <View key={count} style={styles.exercise_container}>
-            <TextInput style={styles.exercise_input} />
-            <TextInput style={styles.exercise_input} inputMode="numeric" />
-            {/* <Text>HEY THE COUNT IS: {cou</Text> */}
+            <TextInput
+              style={styles.exercise_input}
+              placeholder='Enter exercise name'
+              onChangeText={(e) => updateExerciseList(e, count, true)}
+            />
+            <TextInput
+              style={styles.exercise_input}
+              placeholder='Enter set amount'
+              onChangeText={(e) => updateExerciseList(e, count, false)}
+            // inputMode="numeric" 
+            />
           </View>
 
         ))}
@@ -87,23 +111,23 @@ const add_exercise = () => {
 
       {/* Current Steps */}
       <View style={styles.steps_container}>
-            <View style={styles.individual_step_container}>
-              <Text style={styles.step_text}>Add Workout</Text>
-              <Text style={styles.inprogress_step}>1</Text>
-            </View>
-            <View style={styles.individual_step_container}>
-              <Text style={styles.step_text}>Add Exercises</Text>
-              <Text style={styles.inprogress_step}>2</Text>
-            </View>
-            <View style={styles.individual_step_container}>
-              <Text style={styles.step_text}>Add Reps</Text>
-              <Text style={styles.inprogress_step}>3</Text>
-            </View>
-            <View style={styles.individual_step_container}>
-              <Text style={styles.step_text}>Review</Text>
-              <Text style={styles.inprogress_step}>4</Text>
-            </View>
-          </View>
+        <View style={styles.individual_step_container}>
+          <Text style={styles.step_text}>Add Workout</Text>
+          <Text style={styles.inprogress_step}>1</Text>
+        </View>
+        <View style={styles.individual_step_container}>
+          <Text style={styles.step_text}>Add Exercises</Text>
+          <Text style={styles.inprogress_step}>2</Text>
+        </View>
+        <View style={styles.individual_step_container}>
+          <Text style={styles.step_text}>Add Reps</Text>
+          <Text style={styles.inprogress_step}>3</Text>
+        </View>
+        <View style={styles.individual_step_container}>
+          <Text style={styles.step_text}>Review</Text>
+          <Text style={styles.inprogress_step}>4</Text>
+        </View>
+      </View>
     </ScrollView>
   )
 }
@@ -122,12 +146,12 @@ const styles = StyleSheet.create({
   exercise_list_container: {
     flexDirection: 'column',
     justifyContent: 'space-between',
-    // height: "50%"
   },
   exercise_container: {
     flexDirection: 'row',
     justifyContent: 'space-evenly',
-    paddingTop: 20
+    paddingTop: 20,
+    paddingBottom: 20
   },
   exercise_input: {
     borderBottomWidth: 2,
