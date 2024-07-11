@@ -19,7 +19,7 @@ const add_reps = () => {
 
   const test = SecureStore.getItem("Workout");
 
-  const w2 = JSON.parse(test + "");
+  const w2 = JSON.parse(String(test));
 
   function test2() {
     console.log(w2)

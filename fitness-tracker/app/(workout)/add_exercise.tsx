@@ -1,9 +1,10 @@
-import { View, Text, StyleSheet, Button, TextInput, ScrollView, Pressable } from 'react-native';
+import { View, Text, StyleSheet, Button, TextInput, ScrollView, Pressable, Image } from 'react-native';
 import React from 'react';
 import { router, useLocalSearchParams } from 'expo-router';
 import { useFonts, Nunito_400Regular, Nunito_300Light, Nunito_700Bold } from '@expo-google-fonts/nunito';
 import StepCounter from '../components/StepCounter';
 import * as SecureStore from 'expo-secure-store';
+import Ionicons from '@expo/vector-icons/Ionicons';
 
 const add_exercise = () => {
 
@@ -57,20 +58,6 @@ const add_exercise = () => {
     setExercises(newExerciseList);
     console.log(exercises);
   }
-  // function deleteExercise(count: number) {
-  //   const newExercise = exercises[count];
-  //   (isName ? newExercise.name = value : newExercise.workoutSet = value)
-  //   const newExerciseList = exercises.map((e, c) => {
-  //     if (c === count) {
-  //       return newExercise;
-  //     } else {
-  //       return e;
-  //     }
-  //   });
-
-  //   setExercises(newExerciseList);
-  //   console.log(exercises);
-  // }
 
   function gotoAddReps(exercises: typeof exercise[]) {
     console.log(exercises);
@@ -96,19 +83,28 @@ const add_exercise = () => {
           <View key={count} style={styles.exercise_container}>
             <TextInput
               style={styles.exercise_input}
-              placeholder='Enter exercise name'
+              // placeholder='Enter exercise name'
               onChangeText={(e) => updateExerciseList(e, count, true)}
+              value={String(exercise.name)}
             />
             <TextInput
               style={styles.exercise_input}
-              placeholder='Enter set amount'
+              // placeholder='Enter set amount'
               onChangeText={(e) => updateExerciseList(e, count, false)}
-            // inputMode="numeric" 
+              inputMode="numeric"
+              value={String(exercise.workoutSet)}
             />
-            <Button 
-              title="Delete"
-              onPress={() => {setExercises(exercises.filter((e) => e !== exercise))}}
-            />
+
+            <Pressable
+              onPress={() => { setExercises(exercises.filter((e) => e !== exercise)) }}
+            >
+              <Ionicons
+                name="trash-outline"
+                color="red"
+                size={28}
+              />
+            </Pressable>
+
           </View>
 
         ))}
@@ -116,25 +112,24 @@ const add_exercise = () => {
 
       </View>
 
-      {/* TODO: Change Button component to Pressable and Text */}
-      {/* <Button
-        title="Add Exercise"
-        onPress={(e) => addEmptyExercise()}
-        disabled={exercises.length >= exerciseLimit}
-      /> */}
       <View style={styles.button_container}>
 
-        <Pressable disabled={exercises.length >= exerciseLimit} onPress={(e) => addEmptyExercise()} style={exercises.length >= exerciseLimit ? styles.add_exercise_button_disabled : styles.add_exercise_button_enabled}>
-          <Text style={exercises.length >= exerciseLimit ? styles.add_exercise_text_disabled : styles.add_exercise_text_enabled}>Add Exercise</Text>
+        <Pressable
+          disabled={exercises.length >= exerciseLimit}
+          onPress={(e) => addEmptyExercise()}
+          style={exercises.length >= exerciseLimit ? styles.add_exercise_button_disabled : styles.add_exercise_button_enabled}
+        >
+          <Text style={exercises.length >= exerciseLimit ? styles.add_exercise_text_disabled : styles.add_exercise_text_enabled}>
+            Add Exercise
+          </Text>
         </Pressable>
 
-        {/* TODO: Change Button component to Pressable and Text */}
-        {/* <Button
-          title="Workout"
+        <Pressable
           onPress={(e) => gotoAddReps(exercises)}
-        /> */}
-        <Pressable onPress={(e) => gotoAddReps(exercises)} style={styles.add_exercise_button_enabled}>
-          <Text style={styles.add_exercise_text_enabled}>Workout</Text>
+          style={styles.add_exercise_button_enabled}>
+          <Text style={styles.add_exercise_text_enabled}>
+            Workout
+          </Text>
         </Pressable>
       </View>
 
@@ -176,7 +171,7 @@ const styles = StyleSheet.create({
     width: "100%",
     alignItems: 'center',
   },
-  
+
   add_exercise_button_enabled: {
     // fontSize: 48
     marginTop: 40,
@@ -185,7 +180,7 @@ const styles = StyleSheet.create({
     // borderWidth: 2,
     // borderColor: "#97a9ff",
     shadowColor: '#171717',
-    shadowOffset: {width: -2, height: 2},
+    shadowOffset: { width: -2, height: 2 },
     shadowOpacity: 0.2,
     shadowRadius: 3,
     width: "85%",
@@ -202,7 +197,7 @@ const styles = StyleSheet.create({
     // borderWidth: 2,
     // borderColor: "#909090",
     shadowColor: '#171717',
-    shadowOffset: {width: -2, height: 2},
+    shadowOffset: { width: -2, height: 2 },
     shadowOpacity: 0.2,
     shadowRadius: 3,
     width: "85%",
