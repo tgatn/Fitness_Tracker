@@ -1,28 +1,32 @@
-import { View, Text } from 'react-native'
-import React from 'react'
-import { useLocalSearchParams } from 'expo-router'
+import { View, Text, Button } from 'react-native';
+import React from 'react';
+import { useLocalSearchParams } from 'expo-router';
+import * as SecureStore from 'expo-secure-store';
 
 const add_reps = () => {
-  const params = useLocalSearchParams();
+  // const params = useLocalSearchParams();
 
-  const workoutName = params['workoutName'];
+  //const workoutName = params['workoutName'];
 
   const exercise = {
     name: String,
     workoutSet: Number
   }
 
-  const e = params['e'];
+  //const e = params['e'];
 
-  
+  // const e2 = JSON.parse(e + "")
 
-  
-  console.log(params)
+  const test = SecureStore.getItem("Workout");
+
+  function test2() {
+    console.log(test)
+  }
 
   return (
     <View>
-      <Text>{workoutName}</Text>
-      <Text>{e}</Text>
+      <Button onPress={(e) => test2()} title="test" />
+
       
       
       

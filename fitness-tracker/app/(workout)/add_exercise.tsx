@@ -1,9 +1,9 @@
-import { View, Text, StyleSheet, Button, TextInput, ScrollView } from 'react-native'
-import React from 'react'
-import { useLocalSearchParams } from 'expo-router'
+import { View, Text, StyleSheet, Button, TextInput, ScrollView } from 'react-native';
+import React from 'react';
+import { router, useLocalSearchParams } from 'expo-router';
 import { useFonts, Nunito_400Regular, Nunito_300Light, Nunito_700Bold } from '@expo-google-fonts/nunito';
-import { router } from 'expo-router';
-// import { Step_Counter } from '../../components/step_counter'
+import StepCounter from '../components/StepCounter';
+import * as SecureStore from 'expo-secure-store';
 
 const add_exercise = () => {
 
@@ -59,9 +59,11 @@ const add_exercise = () => {
   }
 
   function gotoAddReps(exercises: typeof exercise[]) {
-    console.log(exercises);
-    const e = JSON.stringify(exercises); // converts JSON to string
-    router.push({ pathname: "/add_reps", params: { e, workoutName } });
+    // console.log(exercises);
+    // const e = JSON.stringify(exercises); // converts JSON to string
+    // router.push({ pathname: "/add_reps", params: { e, workoutName } });
+    SecureStore.setItemAsync("Workout", "1");
+    router.push({ pathname: "/add_reps" });
   }
 
   return (
@@ -110,24 +112,7 @@ const add_exercise = () => {
       />
 
       {/* Current Steps */}
-      <View style={styles.steps_container}>
-        <View style={styles.individual_step_container}>
-          <Text style={styles.step_text}>Add Workout</Text>
-          <Text style={styles.inprogress_step}>1</Text>
-        </View>
-        <View style={styles.individual_step_container}>
-          <Text style={styles.step_text}>Add Exercises</Text>
-          <Text style={styles.inprogress_step}>2</Text>
-        </View>
-        <View style={styles.individual_step_container}>
-          <Text style={styles.step_text}>Add Reps</Text>
-          <Text style={styles.inprogress_step}>3</Text>
-        </View>
-        <View style={styles.individual_step_container}>
-          <Text style={styles.step_text}>Review</Text>
-          <Text style={styles.inprogress_step}>4</Text>
-        </View>
-      </View>
+      <StepCounter current_step={2}></StepCounter>
     </ScrollView>
   )
 }
