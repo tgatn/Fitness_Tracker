@@ -19,17 +19,15 @@ const add_reps = () => {
 
   const test = SecureStore.getItem("Workout");
 
+  const w2 = JSON.parse(test + "");
+
   function test2() {
-    console.log(test)
+    console.log(w2)
   }
 
   return (
     <View>
       <Button onPress={(e) => test2()} title="test" />
-
-      
-      
-      
     </View>
   )
 }
