@@ -27,8 +27,6 @@ const add_exercise = () => {
 
   const exerciseLimit = 10;
 
-  const test = [1, 2, 3];
-
   function addEmptyExercise() {
     const exercise = {
       name: "",
@@ -62,20 +60,19 @@ const add_exercise = () => {
   function gotoAddReps(exercises: typeof exercise[]) {
     console.log(exercises);
     const e = JSON.stringify(exercises); // converts JSON to string
-    // router.push({ pathname: "/add_reps", params: { e, workoutName } });
     SecureStore.setItem("Workout", e);
     router.push({ pathname: "/add_reps" });
   }
 
   return (
     <ScrollView>
-      <Text>Workout: {workoutName}</Text>
+      <Text style={{fontSize: 48, textAlign: 'center', borderWidth: 2}}>Workout: {workoutName}</Text>
       <View style={styles.label_container}>
         <Text style={styles.label}>Exercise</Text>
         <Text style={styles.label}># of Sets</Text>
       </View>
 
-      {exercises.length === 0 && <Text >Add an exercise</Text>}
+      {exercises.length === 0 && <Text style={{fontSize: 16, textAlign: 'center', paddingTop: 20}}>Add an exercise</Text>}
 
       <View style={styles.exercise_list_container}>
         {exercises.map((exercise, count) => (
@@ -83,13 +80,11 @@ const add_exercise = () => {
           <View key={count} style={styles.exercise_container}>
             <TextInput
               style={styles.exercise_input}
-              // placeholder='Enter exercise name'
               onChangeText={(e) => updateExerciseList(e, count, true)}
               value={String(exercise.name)}
             />
             <TextInput
               style={styles.exercise_input}
-              // placeholder='Enter set amount'
               onChangeText={(e) => updateExerciseList(e, count, false)}
               inputMode="numeric"
               value={String(exercise.workoutSet)}

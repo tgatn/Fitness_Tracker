@@ -4,20 +4,13 @@ import { useLocalSearchParams } from 'expo-router';
 import * as SecureStore from 'expo-secure-store';
 
 const add_reps = () => {
-  // const params = useLocalSearchParams();
-
-  //const workoutName = params['workoutName'];
 
   const exercise = {
     name: String,
     workoutSet: Number
   }
 
-  //const e = params['e'];
-
-  // const e2 = JSON.parse(e + "")
-
-  const test = SecureStore.getItem("Workout");
+  const exercises = SecureStore.getItem("Workout");
 
   const w2 = JSON.parse(String(test));
 

@@ -23,6 +23,7 @@ const workout = () => {
       <ScrollView> 
         <View style={styles.container}>
           <View style={styles.main_content}>
+
             <TextInput
               style={styles.workout_input}
               value={workoutName}
