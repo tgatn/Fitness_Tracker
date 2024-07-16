@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Button, TextInput, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, Button, TextInput, ScrollView, Dimensions, PixelRatio } from 'react-native';
 
 interface stepCounterProps {
   /** The text to display inside the button */
@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     // alignSelf: "flex-end"
     position: 'relative',
-    marginTop: "80%"
+    marginTop: Dimensions.get("window").height * .1
   },
 
   individual_step_container: {
@@ -56,7 +56,11 @@ const styles = StyleSheet.create({
 
   inprogress_step: {
     backgroundColor: "#FFC634",
-    borderRadius: 300,
+    
+    height: Dimensions.get("window").height * .04,
+    width: Dimensions.get("window").width * .09,
+    borderRadius: Math.round((Dimensions.get("window").height * .04 + Dimensions.get("window").width * .09) / 4),
+    overflow: "hidden",
     fontSize: 18,
     fontFamily: "Nunito_400Regular",
     textAlign: "center",
@@ -66,7 +70,11 @@ const styles = StyleSheet.create({
 
   completed_step: {
     backgroundColor: "#7cc42c",
-    borderRadius: 300,
+    
+    height: Dimensions.get("window").height * .04,
+    width: Dimensions.get("window").width * .09,
+    borderRadius: Math.round((Dimensions.get("window").height * .04 + Dimensions.get("window").width * .09) / 4),
+    overflow: "hidden",
     fontSize: 18,
     fontFamily: "Nunito_400Regular",
     textAlign: "center",
@@ -76,7 +84,11 @@ const styles = StyleSheet.create({
 
   uncompleted_step: {
     backgroundColor: "#d9d9d9",
-    borderRadius: 300,
+
+    height: Dimensions.get("window").height * .04,
+    width: Dimensions.get("window").width * .09,
+    borderRadius: Math.round((Dimensions.get("window").height * .04 + Dimensions.get("window").width * .09) / 4),
+    overflow: "hidden",
     fontSize: 18,
     fontFamily: "Nunito_400Regular",
     textAlign: "center",

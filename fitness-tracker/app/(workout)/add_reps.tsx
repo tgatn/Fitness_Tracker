@@ -1,4 +1,4 @@
-import { View, Text, Button } from 'react-native';
+import { View, Text, Button, Platform } from 'react-native';
 import React from 'react';
 import { useLocalSearchParams } from 'expo-router';
 import * as SecureStore from 'expo-secure-store';
@@ -11,7 +11,8 @@ const add_reps = () => {
     workoutSet: Number
   }
 
-  const exercises = SecureStore.getItem("Workout");
+  const exercises = (Platform.OS === "web") ? localStorage.getItem("Workout"): SecureStore.getItem("Workout");
+
 
   function test2() {
     console.log(exercises)

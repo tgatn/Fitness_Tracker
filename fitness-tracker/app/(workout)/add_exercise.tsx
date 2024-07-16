@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Button, TextInput, ScrollView, Pressable, Image } from 'react-native';
+import { View, Text, StyleSheet, Button, TextInput, ScrollView, Pressable, Image, Platform } from 'react-native';
 import React from 'react';
 import { router, useLocalSearchParams } from 'expo-router';
 import { useFonts, Nunito_400Regular, Nunito_300Light, Nunito_700Bold } from '@expo-google-fonts/nunito';
@@ -60,7 +60,9 @@ export default function add_exercise() {
   function gotoAddReps(exercises: typeof exercise[]) {
     console.log(exercises);
     const e = JSON.stringify(exercises); // converts JSON to string
-    SecureStore.setItem("Workout", e);
+
+    (Platform.OS === "web") ? localStorage.setItem("Workout", e) : SecureStore.setItem("Workout", e);
+    
     router.push({ pathname: "/add_reps" });
   }
 
