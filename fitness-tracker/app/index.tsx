@@ -12,8 +12,6 @@ export default function Index() {
     >
       <Text>This is the landing page</Text>
       <Link href="/home" style={{ color: 'blue' }}> Go to Home</Link>
-      <Link href="/workout" style={{ color: 'blue' }}> Go to Workout</Link>
-      <Link href="/profile" style={{ color: 'blue' }}> Go to profile</Link>
     </View>
   );
 }

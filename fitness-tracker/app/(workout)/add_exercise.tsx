@@ -6,7 +6,7 @@ import StepCounter from '../components/StepCounter';
 import * as SecureStore from 'expo-secure-store';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
-const add_exercise = () => {
+export default function add_exercise() {
 
   const params = useLocalSearchParams();
 
@@ -66,13 +66,13 @@ const add_exercise = () => {
 
   return (
     <ScrollView>
-      <Text style={{fontSize: 48, textAlign: 'center', borderWidth: 2}}>Workout: {workoutName}</Text>
+      <Text style={{ fontSize: 48, textAlign: 'center', borderWidth: 2 }}>Workout: {workoutName}</Text>
       <View style={styles.label_container}>
         <Text style={styles.label}>Exercise</Text>
         <Text style={styles.label}># of Sets</Text>
       </View>
 
-      {exercises.length === 0 && <Text style={{fontSize: 16, textAlign: 'center', paddingTop: 20}}>Add an exercise</Text>}
+      {exercises.length === 0 && <Text style={{ fontSize: 16, textAlign: 'center', paddingTop: 20 }}>Add an exercise</Text>}
 
       <View style={styles.exercise_list_container}>
         {exercises.map((exercise, count) => (
@@ -133,8 +133,6 @@ const add_exercise = () => {
     </ScrollView>
   )
 }
-
-export default add_exercise
 
 const styles = StyleSheet.create({
   label_container: {

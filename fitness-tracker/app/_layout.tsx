@@ -9,7 +9,11 @@ export default function Layout() {
       <Stack.Screen
         name="(tabs)"
         options={{
-          // title: "TESTING",
+          headerShown: false
+        }} />
+      <Stack.Screen
+        name="(workout)"
+        options={{
           headerShown: false
         }} />
     </Stack>

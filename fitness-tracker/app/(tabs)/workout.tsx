@@ -46,7 +46,7 @@ const workout = () => {
 }
 
 export function gotoAddExercise(name: string) {
-  router.push({pathname: "/add_exercise", params: {name}});
+  router.push({pathname: "/(workout)/add_exercise", params: {name}});
 }
 
 export default workout
@@ -54,9 +54,8 @@ export default workout
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    margin: 20,
+    margin: "10%",
     // justifyContent: 'space-between',
-    height: "100%",
     alignItems: 'center',
     // backgroundColor: "#ff9302"
   },

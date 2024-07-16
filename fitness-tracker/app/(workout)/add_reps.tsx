@@ -2,6 +2,7 @@ import { View, Text, Button } from 'react-native';
 import React from 'react';
 import { useLocalSearchParams } from 'expo-router';
 import * as SecureStore from 'expo-secure-store';
+import StepCounter from '../components/StepCounter';
 
 const add_reps = () => {
 
@@ -12,15 +13,15 @@ const add_reps = () => {
 
   const exercises = SecureStore.getItem("Workout");
 
-  const w2 = JSON.parse(String(test));
-
   function test2() {
-    console.log(w2)
+    console.log(exercises)
   }
 
   return (
     <View>
       <Button onPress={(e) => test2()} title="test" />
+      {/* Current Steps */}
+      <StepCounter current_step={3}></StepCounter>
     </View>
   )
 }
