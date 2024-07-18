@@ -1,19 +1,20 @@
 import { View, Text, Image, StyleSheet } from 'react-native'
 import React from 'react'
-import { Tabs, Redirect } from 'expo-router'
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import { Tabs, Redirect, Slot } from 'expo-router'
+import Ionicons from '@expo/vector-icons/Ionicons';
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-
 const Stack = createNativeStackNavigator();
 
-const TabsLayout = () => {
+
+export default function TabsLayout() {
+
     return (
         <>
             <Tabs
-                 
-                screenOptions={{ 
+
+                screenOptions={{
                     tabBarStyle: {
                         backgroundColor: "#707ebd"
                     },
@@ -32,9 +33,8 @@ const TabsLayout = () => {
                         },
                         headerTitleAlign: 'center',
                         headerTintColor: '#fff',
-                        tabBarIcon: ({focused, color, size}) => {
-                            let iconName = "home-outline";
-                            return <Ionicons name={iconName} size={size} color={color} />;
+                        tabBarIcon: ({ focused, color, size }) => {
+                            return <Ionicons name="home-outline" size={size} color={color} />;
                         }
                     }}
                 />
@@ -48,9 +48,8 @@ const TabsLayout = () => {
                         },
                         headerTitleAlign: 'center',
                         headerTintColor: '#fff',
-                        tabBarIcon: ({focused, color, size}) => {
-                            let iconName = "add-circle-outline";
-                            return <Ionicons name={iconName} size={size} color={color} />;
+                        tabBarIcon: ({ focused, color, size }) => {
+                            return <Ionicons name="add-circle-outline" size={size} color={color} />;
                         }
                     }}
                 />
@@ -64,18 +63,19 @@ const TabsLayout = () => {
                         },
                         headerTintColor: '#fff',
                         headerTitleAlign: 'center',
-                        tabBarIcon: ({focused, color, size}) => {
-                            let iconName = "person-outline";
-                            return <Ionicons name={iconName} size={size} color={color} />;
+                        tabBarIcon: ({ focused, color, size }) => {
+                            return <Ionicons name="person-outline" size={size} color={color} />;
                         }
                     }}
                 />
             </Tabs>
+
+
         </>
+
+
     )
 }
-
-export default TabsLayout
 
 const styles = StyleSheet.create({
     tab_background: {

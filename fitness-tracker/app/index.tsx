@@ -1,5 +1,5 @@
 import { Link } from "expo-router";
-import { Text, View } from "react-native";
+import { Text, View, Platform } from "react-native";
 
 export default function Index() {
   return (
@@ -12,8 +12,7 @@ export default function Index() {
     >
       <Text>This is the landing page</Text>
       <Link href="/home" style={{ color: 'blue' }}> Go to Home</Link>
-      <Link href="/workout" style={{ color: 'blue' }}> Go to Workout</Link>
-      <Link href="/profile" style={{ color: 'blue' }}> Go to profile</Link>
+      <Text>Device being used: {Platform.OS}</Text>
     </View>
   );
 }

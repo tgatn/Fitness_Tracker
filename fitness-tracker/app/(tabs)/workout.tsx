@@ -2,8 +2,8 @@ import { View, Text, TextInput, StyleSheet, Button, Pressable, Dimensions, Scrol
 import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context';
 import {  useFonts, Nunito_400Regular, Nunito_300Light, Nunito_700Bold } from '@expo-google-fonts/nunito';
-
 import { router } from 'expo-router';
+import StepCounter from '../components/StepCounter';
 
 const workout = () => {
 
@@ -23,6 +23,7 @@ const workout = () => {
       <ScrollView> 
         <View style={styles.container}>
           <View style={styles.main_content}>
+
             <TextInput
               style={styles.workout_input}
               value={workoutName}
@@ -36,24 +37,7 @@ const workout = () => {
           </View>
 
           {/* Current Steps */}
-          <View style={styles.steps_container}>
-            <View style={styles.individual_step_container}>
-              <Text style={styles.step_text}>Add Workout</Text>
-              <Text style={styles.inprogress_step}>1</Text>
-            </View>
-            <View style={styles.individual_step_container}>
-              <Text style={styles.step_text}>Add Exercises</Text>
-              <Text style={styles.inprogress_step}>2</Text>
-            </View>
-            <View style={styles.individual_step_container}>
-              <Text style={styles.step_text}>Add Reps</Text>
-              <Text style={styles.inprogress_step}>3</Text>
-            </View>
-            <View style={styles.individual_step_container}>
-              <Text style={styles.step_text}>Review</Text>
-              <Text style={styles.inprogress_step}>4</Text>
-            </View>
-          </View>
+          <StepCounter current_step={1}></StepCounter>
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -62,7 +46,7 @@ const workout = () => {
 }
 
 export function gotoAddExercise(name: string) {
-  router.push({pathname: "/add_exercise", params: {name}});
+  router.push({pathname: "/(workout)/add_exercise", params: {name}});
 }
 
 export default workout
@@ -70,9 +54,8 @@ export default workout
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    margin: 20,
+    margin: "10%",
     // justifyContent: 'space-between',
-    height: "100%",
     alignItems: 'center',
     // backgroundColor: "#ff9302"
   },
@@ -145,39 +128,4 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontFamily: "Nunito_400Regular"
   },
-
-  steps_container: {
-    marginTop: 250,
-    width: "100%",
-    // flex: 1,
-    justifyContent: "space-evenly",
-    flexDirection: "row",
-    alignItems: "center",
-    // alignSelf: "flex-end"
-    marginBottom: 25
-  },
-
-  individual_step_container: {
-    justifyContent: "center",
-    alignItems: "center"
-  },
-
-  step_text: {
-    fontSize: 16,
-    fontFamily: "Nunito_300Light"
-  },
-
-  inprogress_step: {
-    backgroundColor: "#FFC634",
-    borderRadius: 300,
-    fontSize: 18,
-    fontFamily: "Nunito_400Regular",
-    textAlign: "center",
-    paddingVertical: 5,
-    paddingHorizontal: 13
-    // height: Dimensions.get('window').width * 0.02,
-    // width: Dimensions.get('window').width * 0.02
-    // flex: 1
-    // borderCurve: 50
-  }
 })

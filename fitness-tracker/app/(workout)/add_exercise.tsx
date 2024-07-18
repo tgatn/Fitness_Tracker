@@ -1,11 +1,12 @@
-import { View, Text, StyleSheet, Button, TextInput, ScrollView } from 'react-native'
-import React from 'react'
-import { useLocalSearchParams } from 'expo-router'
-import {  useFonts, Nunito_400Regular, Nunito_300Light, Nunito_700Bold } from '@expo-google-fonts/nunito';
-import { router } from 'expo-router';
-// import { Step_Counter } from '../../components/step_counter'
+import { View, Text, StyleSheet, Button, TextInput, ScrollView, Pressable, Image, Platform } from 'react-native';
+import React from 'react';
+import { router, useLocalSearchParams } from 'expo-router';
+import { useFonts, Nunito_400Regular, Nunito_300Light, Nunito_700Bold } from '@expo-google-fonts/nunito';
+import StepCounter from '../components/StepCounter';
+import * as SecureStore from 'expo-secure-store';
+import Ionicons from '@expo/vector-icons/Ionicons';
 
-const add_exercise = () => {
+export default function add_exercise() {
 
   const params = useLocalSearchParams();
 
@@ -23,11 +24,8 @@ const add_exercise = () => {
   }
 
   const [exercises, setExercises] = React.useState<typeof exercise[]>([]);
-  console.log(exercises);
 
   const exerciseLimit = 10;
-
-  const test = [1, 2, 3];
 
   function addEmptyExercise() {
     const exercise = {
@@ -44,26 +42,66 @@ const add_exercise = () => {
     console.log(exercises);
   }
 
+  function updateExerciseList(value: any, count: number, isName: boolean) {
+    const newExercise = exercises[count];
+    (isName ? newExercise.name = value : newExercise.workoutSet = value)
+    const newExerciseList = exercises.map((e, c) => {
+      if (c === count) {
+        return newExercise;
+      } else {
+        return e;
+      }
+    });
+
+    setExercises(newExerciseList);
+    console.log(exercises);
+  }
+
   function gotoAddReps(exercises: typeof exercise[]) {
+    console.log(exercises);
     const e = JSON.stringify(exercises); // converts JSON to string
-    router.push({pathname: "/add_reps", params: {e}});
+
+    (Platform.OS === "web") ? localStorage.setItem("Workout", e) : SecureStore.setItem("Workout", e);
+    
+    router.push({ pathname: "/add_reps" });
   }
 
   return (
     <ScrollView>
-      <Text>Workout: {workoutName}</Text>
-      <Text>add_exercise</Text>
+      <Text style={{ fontSize: 48, textAlign: 'center', borderWidth: 2 }}>Workout: {workoutName}</Text>
       <View style={styles.label_container}>
         <Text style={styles.label}>Exercise</Text>
         <Text style={styles.label}># of Sets</Text>
       </View>
+
+      {exercises.length === 0 && <Text style={{ fontSize: 16, textAlign: 'center', paddingTop: 20 }}>Add an exercise</Text>}
+
       <View style={styles.exercise_list_container}>
         {exercises.map((exercise, count) => (
 
           <View key={count} style={styles.exercise_container}>
-            <TextInput style={styles.exercise_input} />
-            <TextInput style={styles.exercise_input} />
-            {/* <Text>HEY THE COUNT IS: {cou</Text> */}
+            <TextInput
+              style={styles.exercise_input}
+              onChangeText={(e) => updateExerciseList(e, count, true)}
+              value={String(exercise.name)}
+            />
+            <TextInput
+              style={styles.exercise_input}
+              onChangeText={(e) => updateExerciseList(e, count, false)}
+              inputMode="numeric"
+              value={String(exercise.workoutSet)}
+            />
+
+            <Pressable
+              onPress={() => { setExercises(exercises.filter((e) => e !== exercise)) }}
+            >
+              <Ionicons
+                name="trash-outline"
+                color="red"
+                size={28}
+              />
+            </Pressable>
+
           </View>
 
         ))}
@@ -71,105 +109,109 @@ const add_exercise = () => {
 
       </View>
 
-      {/* TODO: Change Button component to Pressable and Text */}
-      <Button
-        title="Add Exercise"
-        onPress={(e) => addEmptyExercise()}
-        disabled={exercises.length >= exerciseLimit}
-      />
+      <View style={styles.button_container}>
 
-      {/* TODO: Change Button component to Pressable and Text */}
-      <Button
-        title="Workout"
-        onPress={(e) => gotoAddReps(exercises)}
-      />
+        <Pressable
+          disabled={exercises.length >= exerciseLimit}
+          onPress={(e) => addEmptyExercise()}
+          style={exercises.length >= exerciseLimit ? styles.add_exercise_button_disabled : styles.add_exercise_button_enabled}
+        >
+          <Text style={exercises.length >= exerciseLimit ? styles.add_exercise_text_disabled : styles.add_exercise_text_enabled}>
+            Add Exercise
+          </Text>
+        </Pressable>
+
+        <Pressable
+          onPress={(e) => gotoAddReps(exercises)}
+          style={styles.add_exercise_button_enabled}>
+          <Text style={styles.add_exercise_text_enabled}>
+            Workout
+          </Text>
+        </Pressable>
+      </View>
 
       {/* Current Steps */}
-      <View style={styles.steps_container}>
-            <View style={styles.individual_step_container}>
-              <Text style={styles.step_text}>Add Workout</Text>
-              <Text style={styles.inprogress_step}>1</Text>
-            </View>
-            <View style={styles.individual_step_container}>
-              <Text style={styles.step_text}>Add Exercises</Text>
-              <Text style={styles.inprogress_step}>2</Text>
-            </View>
-            <View style={styles.individual_step_container}>
-              <Text style={styles.step_text}>Add Reps</Text>
-              <Text style={styles.inprogress_step}>3</Text>
-            </View>
-            <View style={styles.individual_step_container}>
-              <Text style={styles.step_text}>Review</Text>
-              <Text style={styles.inprogress_step}>4</Text>
-            </View>
-          </View>
+      <StepCounter current_step={2}></StepCounter>
     </ScrollView>
   )
 }
 
-export default add_exercise
-
 const styles = StyleSheet.create({
   label_container: {
-    backgroundColor: 'pink',
     flexDirection: 'row',
     justifyContent: 'space-evenly'
   },
   label: {
-    fontSize: 16,
+    fontSize: 32,
     fontWeight: 'bold'
   },
   exercise_list_container: {
-    // backgroundColor: 'blue',
     flexDirection: 'column',
-    justifyContent: 'space-evenly',
-    // borderColor: 'black',
-    // borderWidth: 1
+    justifyContent: 'space-between',
   },
   exercise_container: {
-    // backgroundColor: 'blue',
     flexDirection: 'row',
     justifyContent: 'space-evenly',
-    // borderColor: 'black',
-    // borderWidth: 1
+    paddingTop: 20,
+    paddingBottom: 20
   },
   exercise_input: {
     borderBottomWidth: 2,
     textAlign: 'center',
-
+    width: "40%"
   },
-  steps_container: {
-    marginTop: 250,
+
+  button_container: {
+    flex: 1,
     width: "100%",
-    // flex: 1,
-    justifyContent: "space-evenly",
-    flexDirection: "row",
-    alignItems: "center",
-    // alignSelf: "flex-end"
-    marginBottom: 25
+    alignItems: 'center',
   },
 
-  individual_step_container: {
+  add_exercise_button_enabled: {
+    // fontSize: 48
+    marginTop: 40,
+    // padding: 25,
+    backgroundColor: '#166fe3',
+    // borderWidth: 2,
+    // borderColor: "#97a9ff",
+    shadowColor: '#171717',
+    shadowOffset: { width: -2, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
+    width: "85%",
+    height: 60,
+    elevation: 2,
     justifyContent: "center",
-    alignItems: "center"
+    borderRadius: 10
   },
 
-  step_text: {
-    fontSize: 16,
-    fontFamily: "Nunito_300Light"
+  add_exercise_button_disabled: {
+    // padding: 25,
+    marginTop: 40,
+    backgroundColor: '#dfdfdf',
+    // borderWidth: 2,
+    // borderColor: "#909090",
+    shadowColor: '#171717',
+    shadowOffset: { width: -2, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
+    width: "85%",
+    height: 60,
+    elevation: 2,
+    justifyContent: "center",
+    borderRadius: 10
   },
 
-  inprogress_step: {
-    backgroundColor: "#FFC634",
-    borderRadius: 300,
-    fontSize: 18,
-    fontFamily: "Nunito_400Regular",
-    textAlign: "center",
-    paddingVertical: 5,
-    paddingHorizontal: 13
-    // height: Dimensions.get('window').width * 0.02,
-    // width: Dimensions.get('window').width * 0.02
-    // flex: 1
-    // borderCurve: 50
-  }
+  add_exercise_text_enabled: {
+    textAlign: 'center',
+    fontSize: 24,
+    fontFamily: "Nunito_400Regular"
+  },
+
+  add_exercise_text_disabled: {
+    textAlign: 'center',
+    color: "#c0c0c0",
+    fontSize: 24,
+    fontFamily: "Nunito_400Regular"
+  },
 })
