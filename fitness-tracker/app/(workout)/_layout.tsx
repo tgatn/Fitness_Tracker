@@ -19,6 +19,20 @@ export default function WorkoutLayout() {
                             headerLeft: () => <Pressable onPress={router.back}><Text>Back</Text></Pressable>
                         }}
                 />
+                <Stack.Screen
+                    name="add_reps"
+                    options={
+                        {
+                            title: "Add Stats to Each Exercise",
+                            headerShown: true,
+                            headerStyle: {
+                                backgroundColor: "#707ebd",
+                            },
+                            headerTintColor: '#fff',
+                            headerTitleAlign: 'center',
+                            headerLeft: () => <Pressable onPress={router.back}><Text>Back</Text></Pressable>
+                        }}
+                />
 
             </Stack>
         </>

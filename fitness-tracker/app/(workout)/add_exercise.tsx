@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Button, TextInput, ScrollView, Pressable, Image, Platform } from 'react-native';
+import { View, Text, StyleSheet, Button, TextInput, ScrollView, Pressable, Image, Platform, SafeAreaView } from 'react-native';
 import React from 'react';
 import { router } from 'expo-router';
 import { useFonts, Nunito_400Regular, Nunito_300Light, Nunito_700Bold } from '@expo-google-fonts/nunito';
@@ -11,16 +11,16 @@ import { Exercise } from '@/constants/Exercise';
 import { WorkoutSet } from '@/constants/WorkoutSet';
 
 export default function add_exercise() {
-  
+
   // Fonts
   let [fontsLoaded] = useFonts({
     Nunito_400Regular,
     Nunito_300Light,
     Nunito_700Bold
   });
-  
+
   // Gets workout as a JSON string
-  const workoutString = (Platform.OS === "web") ? localStorage.getItem("Workout"): SecureStore.getItem("Workout");
+  const workoutString = (Platform.OS === "web") ? localStorage.getItem("Workout") : SecureStore.getItem("Workout");
   // Converts workout string as a workout object 
   const workoutObj = JSON.parse(String(workoutString));
 
@@ -30,7 +30,7 @@ export default function add_exercise() {
     workoutSet: [],
     workoutSetAmount: 0
   }
-  
+
   // Usestate to hold a list of exercise
   const [exercises, setExercises] = React.useState<typeof exercise[]>(workoutObj.exercise);
 
@@ -82,7 +82,7 @@ export default function add_exercise() {
    * @param list_of_exercises A list of exercises and their associated amount of sets
    */
   async function gotoAddReps(list_of_exercises: typeof exercise[]) {
-  
+
     const emptySet: WorkoutSet = {
       restTime: 0,
       warmUp: false,
@@ -119,7 +119,7 @@ export default function add_exercise() {
     })
     // workoutObj.exercise = list_of_exercises;
 
-    const workoutObjStr= JSON.stringify(workoutObj); // converts JSON to string
+    const workoutObjStr = JSON.stringify(workoutObj); // converts JSON to string
 
 
 
@@ -129,85 +129,80 @@ export default function add_exercise() {
     (Platform.OS === "web") ? localStorage.setItem("Workout", workoutObjStr) : SecureStore.setItem("Workout", workoutObjStr);
     // console.log("test")
     // console.log(workoutObj)
-    
-    router.push({ pathname: "/add_reps" });
+
+    router.push({ pathname: "/(workout)/add_reps" });
   }
 
   return (
-    <ScrollView>
-      <Text style={{ fontSize: 48, textAlign: 'center', borderWidth: 2 }}>Workout: {workoutObj.name}</Text>
-      <View style={styles.label_container}>
-        <Text style={styles.label}>Exercise</Text>
-        <Text style={styles.label}># of Sets</Text>
-      </View>
+    <SafeAreaView style={{flex: 1}}>
+      <ScrollView>
+        <Text style={{ fontSize: 48, textAlign: 'center', borderWidth: 2 }}>Workout: {workoutObj.name}</Text>
+        <View style={styles.label_container}>
+          <Text style={styles.label}>Exercise</Text>
+          <Text style={styles.label}># of Sets</Text>
+        </View>
 
-      {exercises.length === 0 && <Text style={{ fontSize: 16, textAlign: 'center', paddingTop: 20 }}>Add an exercise</Text>}
+        {exercises.length === 0 && <Text style={{ fontSize: 16, textAlign: 'center', paddingTop: 20 }}>Add an exercise</Text>}
 
-      <View style={styles.exercise_list_container}>
-        {exercises.map((exercise, count) => (
+        <View style={styles.exercise_list_container}>
+          {exercises.map((exercise, count) => (
 
-          <View key={count} style={styles.exercise_container}>
-            <TextInput
-              style={styles.exercise_input}
-              onChangeText={(e) => updateExerciseList(e, count, true)}
-              value={String(exercise.name)}
-            />
-            <TextInput
-              style={styles.exercise_input}
-              onChangeText={(e) => updateExerciseList(e, count, false)}
-              inputMode="numeric"
-              value={String(exercise.workoutSetAmount)}
-            />
-
-            <Pressable
-              onPress={() => { setExercises(exercises.filter((e) => e !== exercise)) }}
-            >
-              <Ionicons
-                name="trash-outline"
-                color="red"
-                size={28}
+            <View key={count} style={styles.exercise_container}>
+              <TextInput
+                style={styles.exercise_input}
+                onChangeText={(e) => updateExerciseList(e, count, true)}
+                value={String(exercise.name)}
               />
-            </Pressable>
+              <TextInput
+                style={styles.exercise_input}
+                onChangeText={(e) => updateExerciseList(e, count, false)}
+                inputMode="numeric"
+                value={String(exercise.workoutSetAmount)}
+              />
 
-          </View>
+              <Pressable
+                onPress={() => { setExercises(exercises.filter((e) => e !== exercise)) }}
+              >
+                <Ionicons
+                  name="trash-outline"
+                  color="red"
+                  size={28}
+                />
+              </Pressable>
 
-        ))}
+            </View>
+
+          ))}
 
 
-      </View>
+        </View>
 
-      <View style={styles.button_container}>
+        <View style={styles.button_container}>
 
-        <Pressable
-          disabled={exercises.length >= exerciseLimit}
-          onPress={(e) => addEmptyExercise()}
-          style={exercises.length >= exerciseLimit ? styles.add_exercise_button_disabled : styles.add_exercise_button_enabled}
-        >
-          <Text style={exercises.length >= exerciseLimit ? styles.add_exercise_text_disabled : styles.add_exercise_text_enabled}>
-            Add Exercise
-          </Text>
-        </Pressable>
+          <Pressable
+            disabled={exercises.length >= exerciseLimit}
+            onPress={(e) => addEmptyExercise()}
+            style={exercises.length >= exerciseLimit ? styles.add_exercise_button_disabled : styles.add_exercise_button_enabled}
+          >
+            <Text style={exercises.length >= exerciseLimit ? styles.add_exercise_text_disabled : styles.add_exercise_text_enabled}>
+              Add Exercise
+            </Text>
+          </Pressable>
 
-        <Pressable
-          onPress={(e) => gotoAddReps(exercises)}
-          style={styles.add_exercise_button_enabled}>
-          <Text style={styles.add_exercise_text_enabled}>
-            Workout
-          </Text>
-        </Pressable>
+          <Pressable
+            onPress={(e) => gotoAddReps(exercises)}
+            style={styles.add_exercise_button_enabled}>
+            <Text style={styles.add_exercise_text_enabled}>
+              Workout
+            </Text>
+          </Pressable>
 
-        <Pressable
-          onPress={() => console.log(workoutObj)}
-          style={styles.add_exercise_button_enabled}>
-          <Text style={styles.add_exercise_text_enabled}>
-            Prints workoutObj
-          </Text>
-        </Pressable>
-      </View>
+        </View>
 
-      {/* Current Steps */}
-      <StepCounter current_step={2}></StepCounter>
-    </ScrollView>
+        {/* Current Steps */}
+        <StepCounter current_step={2}></StepCounter>
+      </ScrollView>
+    </SafeAreaView>
   )
 }
 

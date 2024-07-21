@@ -41,7 +41,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     // alignSelf: "flex-end"
     position: 'relative',
-    marginTop: Dimensions.get("window").height * .1
+    // marginTop: Dimensions.get("window").height * .1,
+
   },
 
   individual_step_container: {
