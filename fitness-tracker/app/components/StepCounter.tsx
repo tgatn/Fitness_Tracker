@@ -42,6 +42,7 @@ const styles = StyleSheet.create({
     // alignSelf: "flex-end"
     position: 'relative',
     // marginTop: Dimensions.get("window").height * .1,
+    paddingBottom: 10
 
   },
 
@@ -57,7 +58,6 @@ const styles = StyleSheet.create({
 
   inprogress_step: {
     backgroundColor: "#FFC634",
-    
     height: Dimensions.get("window").height * .04,
     width: Dimensions.get("window").width * .09,
     borderRadius: Math.round((Dimensions.get("window").height * .04 + Dimensions.get("window").width * .09) / 4),
@@ -71,7 +71,6 @@ const styles = StyleSheet.create({
 
   completed_step: {
     backgroundColor: "#7cc42c",
-    
     height: Dimensions.get("window").height * .04,
     width: Dimensions.get("window").width * .09,
     borderRadius: Math.round((Dimensions.get("window").height * .04 + Dimensions.get("window").width * .09) / 4),

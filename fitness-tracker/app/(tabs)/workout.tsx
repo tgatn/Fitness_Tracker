@@ -36,7 +36,7 @@ const workout = () => {
 
   return (
     <SafeAreaView style={{flex: 1}}>
-      <ScrollView> 
+      <ScrollView style={{flex: 1}}> 
         <View style={styles.container}>
           <View style={styles.main_content}>
 
@@ -52,10 +52,10 @@ const workout = () => {
             </Pressable>
           </View>
 
-          {/* Current Steps */}
-          <StepCounter current_step={1}></StepCounter>
         </View>
       </ScrollView>
+      {/* Current Steps */}
+      <StepCounter current_step={1}></StepCounter>
     </SafeAreaView>
 
   )

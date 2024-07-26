@@ -134,9 +134,9 @@ export default function add_exercise() {
   }
 
   return (
-    <SafeAreaView style={{flex: 1}}>
-      <ScrollView>
-        <Text style={{ fontSize: 48, textAlign: 'center', borderWidth: 2 }}>Workout: {workoutObj.name}</Text>
+    <SafeAreaView style={{ flex: 1 }}>
+      <ScrollView style={{ flex: 1 }}>
+        <Text style={{ fontSize: 48, textAlign: 'center', fontFamily: "Nunito_700Bold" }}>Workout: {workoutObj.name}</Text>
         <View style={styles.label_container}>
           <Text style={styles.label}>Exercise</Text>
           <Text style={styles.label}># of Sets</Text>
@@ -199,9 +199,10 @@ export default function add_exercise() {
 
         </View>
 
-        {/* Current Steps */}
-        <StepCounter current_step={2}></StepCounter>
+
       </ScrollView>
+      {/* Current Steps */}
+      <StepCounter current_step={2}></StepCounter>
     </SafeAreaView>
   )
 }
@@ -213,7 +214,8 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: 32,
-    fontWeight: 'bold'
+    // fontWeight: 'bold'
+    fontFamily: "Nunito_700Bold"
   },
   exercise_list_container: {
     flexDirection: 'column',
@@ -228,7 +230,8 @@ const styles = StyleSheet.create({
   exercise_input: {
     borderBottomWidth: 2,
     textAlign: 'center',
-    width: "40%"
+    width: "40%",
+    fontFamily: "Nunito_400Regular"
   },
 
   button_container: {

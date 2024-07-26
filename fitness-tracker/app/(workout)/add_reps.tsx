@@ -1,6 +1,7 @@
 import { View, Text, Button, Platform, StyleSheet, ScrollView, SafeAreaView, TextInput, Switch, Pressable } from 'react-native';
 import React from 'react';
 import { router } from 'expo-router';
+import { useFonts, Nunito_400Regular, Nunito_300Light, Nunito_700Bold } from '@expo-google-fonts/nunito';
 import * as SecureStore from 'expo-secure-store';
 import StepCounter from '../components/StepCounter';
 import { Workout } from '@/constants/Workout';
@@ -13,13 +14,19 @@ const add_reps = () => {
 
 
 
-  const exercisesStr = (Platform.OS === "web") ? localStorage.getItem("Workout") : SecureStore.getItem("Workout");
+  const workoutStr = (Platform.OS === "web") ? localStorage.getItem("Workout") : SecureStore.getItem("Workout");
 
-  const exercisesObj = JSON.parse(String(exercisesStr));
+  const workoutObj = JSON.parse(String(workoutStr));
 
-  const [exercises, setExercises] = React.useState<typeof Exercise[]>(exercisesObj.exercise);
+  const [exercises, setExercises] = React.useState<typeof Exercise[]>(workoutObj.exercise);
 
-  const [hideExercise, setHideExercise] = React.useState(Array(exercisesObj.exercise.length).fill(false));
+  const [hideExercise, setHideExercise] = React.useState(Array(workoutObj.exercise.length).fill(false));
+
+  let [fontsLoaded] = useFonts({
+    Nunito_400Regular,
+    Nunito_300Light,
+    Nunito_700Bold
+  });
 
   function changeHideStatus(idx: number) {
 
@@ -63,18 +70,18 @@ const add_reps = () => {
 
   function gotoReview(list_of_exercises: Exercise[]) {
     // Clear workoutObj exercises if not empty
-    exercisesObj.exercise = [];
+    workoutObj.exercise = [];
 
     list_of_exercises.map(e => {
-      exercisesObj.exercise.push(e);
+      workoutObj.exercise.push(e);
     })
 
-    const workoutObjStr = JSON.stringify(exercisesObj); // converts JSON to string
+    const workoutObjStr = JSON.stringify(workoutObj); // converts JSON to string
 
-    console.log(exercisesObj);
+    console.log(workoutObj);
 
     (Platform.OS === "web") ? localStorage.setItem("Workout", workoutObjStr) : SecureStore.setItem("Workout", workoutObjStr);
-    router.push({ pathname: "/review_workout" });
+    router.push({ pathname: "/(workout)/review_workout" });
 
   }
 
@@ -96,13 +103,13 @@ const add_reps = () => {
 
                     <Ionicons
                       name="arrow-down"
-                      style={{ paddingTop: 8 }}
+                      style={{ paddingTop: 8, paddingRight: 10, color: "white" }}
                       size={28}
                     /> :
 
                     <Ionicons
                       name="arrow-up"
-                      style={{ paddingTop: 8 }}
+                      style={{ paddingTop: 8, paddingRight: 10, color: "white" }}
                       size={28}
                     />}
                 </Pressable>
@@ -114,12 +121,10 @@ const add_reps = () => {
               {!hideExercise[exrIdx] && exr.workoutSet.map((exerciseSet: WorkoutSet, exerciseSetIdx: number) => (
                 <View key={exerciseSetIdx} style={styles.exerciseSet_container}>
 
-                  <View style={{ paddingLeft: 10, paddingRight: 10, alignItems: "center", justifyContent: "center" }}>
-                    <Text style={{ fontSize: 24 }}>Set {exerciseSetIdx}</Text>
-                  </View>
-                  <View>
+                  <View style={{ paddingLeft: 10, paddingRight: 10, alignItems: "center", justifyContent: "center", borderWidth: 2 }}>
+                    <Text style={{ fontSize: 24, fontFamily: "Nunito_400Regular" }}>Set {exerciseSetIdx + 1}</Text>
                     <View style={styles.exerciseSet_attribute_container}>
-                      <Text>WarmUp: </Text>
+                      <Text style={styles.workoutSet_attribute_text}>WarmUp: </Text>
                       <Switch
                         trackColor={{ false: '#767577', true: '#81b0ff' }}
                         thumbColor={exerciseSet.warmUp ? '#f5dd4b' : '#f4f3f4'}
@@ -127,28 +132,34 @@ const add_reps = () => {
                         value={exerciseSet.warmUp}
                       />
                     </View>
+                  </View>
+                  <View style={{paddingLeft: 10, borderWidth: 2, flex: 1}}>
+
 
                     <View style={styles.exerciseSet_attribute_container}>
-                      <Text>Repetition: </Text>
+                      <Text style={styles.workoutSet_attribute_text}>Repetition: </Text>
                       <TextInput
                         onChangeText={(e) => updateExerciseSet(exrIdx, exerciseSetIdx, "Repetition", e)}
                         value={String(exerciseSet.repetition)}
+                        style={styles.workoutSet_attribute_input}
                       />
                     </View>
 
                     <View style={styles.exerciseSet_attribute_container}>
-                      <Text>Weight: </Text>
+                      <Text style={styles.workoutSet_attribute_text}>Weight: </Text>
                       <TextInput
                         onChangeText={(e) => updateExerciseSet(exrIdx, exerciseSetIdx, "Weight", e)}
                         value={String(exerciseSet.weight)}
+                        style={styles.workoutSet_attribute_input}
                       />
                     </View>
 
                     <View style={styles.exerciseSet_attribute_container}>
-                      <Text>RestTime: </Text>
+                      <Text style={styles.workoutSet_attribute_text}>RestTime: </Text>
                       <TextInput
                         onChangeText={(e) => updateExerciseSet(exrIdx, exerciseSetIdx, "RestTime", e)}
                         value={String(exerciseSet.restTime)}
+                        style={styles.workoutSet_attribute_input}
                       />
                     </View>
                   </View>
@@ -165,8 +176,6 @@ const add_reps = () => {
             <Text style={styles.add_exercise_text_enabled}>Review</Text>
           </Pressable>
         </View>
-        <Button title="Print Obj" onPress={() => console.log(exercisesObj)}/>
-
 
         {/* Current Steps */}
         <StepCounter current_step={3}></StepCounter>
@@ -186,23 +195,37 @@ const styles = StyleSheet.create({
 
   // Each Exercise
   exercise_container: {
+    // backgroundColor: "#707ebd",
+    marginBottom: 25
 
   },
   exercise_header_container: {
+    borderWidth: 2,
+    backgroundColor: "#707ebd",
     flexDirection: 'row',
     justifyContent: 'space-between'
   },
   exercise_text: {
+    paddingLeft: 10,
     fontSize: 32,
+    color: "white",
     fontWeight: "bold",
+    fontFamily: "Nunito_400Regular"
   },
 
   // Workout Set for each container
   exerciseSet_container: {
     flexDirection: 'row',
+    // backgroundColor: "ffffff"
   },
   exerciseSet_attribute_container: {
     flexDirection: 'row',
+  },
+  workoutSet_attribute_text: {
+    fontFamily: "Nunito_400Regular",
+  },
+  workoutSet_attribute_input: {
+    borderBottomWidth: 2
   },
 
 
@@ -229,5 +252,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontFamily: "Nunito_400Regular"
   },
+
+
 
 })
