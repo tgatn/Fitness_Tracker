@@ -1,12 +1,13 @@
-import { View, Text } from 'react-native'
-import React from 'react'
+import React from 'react';
+import { View, Text, TextInput, ScrollView, StyleSheet, Button } from 'react-native';
+import StepCounter from '../components/StepCounter';
 
 const profile = () => {
   return (
     <View>
-      <Text>profile</Text>
+      <Text>Profile page</Text>
     </View>
-  )
-}
+  );
+};
 
-export default profile
+export default profile;

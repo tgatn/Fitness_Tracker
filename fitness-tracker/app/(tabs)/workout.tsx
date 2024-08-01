@@ -1,13 +1,19 @@
-import { View, Text, TextInput, StyleSheet, Button, Pressable, Dimensions, ScrollView } from 'react-native'
+import { View, Text, TextInput, StyleSheet, Button, Pressable, Dimensions, ScrollView, Platform } from 'react-native'
 import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context';
 import {  useFonts, Nunito_400Regular, Nunito_300Light, Nunito_700Bold } from '@expo-google-fonts/nunito';
 import { router } from 'expo-router';
 import StepCounter from '../components/StepCounter';
+import { Workout } from '@/constants/Workout';
+import { Exercise } from '@/constants/Exercise';
+import { WorkoutSet } from '@/constants/WorkoutSet';
+import * as SecureStore from 'expo-secure-store';
+
 
 const workout = () => {
 
   const [workoutName, setWorkoutName] = React.useState('');
+
   let [fontsLoaded] = useFonts({
     Nunito_400Regular,
     Nunito_300Light,
@@ -18,9 +24,19 @@ const workout = () => {
     return null;
   }
 
+  function gotoAddExercise(name: string) {
+    const emptyWorkout: Workout = {
+      name: "",
+      exercise: []
+    };
+    emptyWorkout.name = name;
+    (Platform.OS === "web") ? localStorage.setItem("Workout", JSON.stringify(emptyWorkout)) : SecureStore.setItem("Workout", JSON.stringify(emptyWorkout));
+    router.push({pathname: "/(workout)/add_exercise"});
+  }
+
   return (
     <SafeAreaView style={{flex: 1}}>
-      <ScrollView> 
+      <ScrollView style={{flex: 1}}> 
         <View style={styles.container}>
           <View style={styles.main_content}>
 
@@ -36,17 +52,13 @@ const workout = () => {
             </Pressable>
           </View>
 
-          {/* Current Steps */}
-          <StepCounter current_step={1}></StepCounter>
         </View>
       </ScrollView>
+      {/* Current Steps */}
+      <StepCounter current_step={1}></StepCounter>
     </SafeAreaView>
 
   )
-}
-
-export function gotoAddExercise(name: string) {
-  router.push({pathname: "/(workout)/add_exercise", params: {name}});
 }
 
 export default workout
