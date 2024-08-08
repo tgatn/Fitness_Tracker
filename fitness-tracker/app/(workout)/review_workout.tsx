@@ -8,18 +8,46 @@ import { Workout } from '@/constants/Workout';
 import { Exercise } from '@/constants/Exercise';
 import { WorkoutSet } from '@/constants/WorkoutSet';
 import { Ionicons } from '@expo/vector-icons';
+import { router } from 'expo-router';
+
+import { Query, Account, Client, Databases, ID, Models } from "react-native-appwrite";
 
 const review_workout = () => {
   const workoutString = (Platform.OS === "web") ? localStorage.getItem("Workout") : SecureStore.getItem("Workout");
 
-  const workoutObj = JSON.parse(String(workoutString));
+  const workoutObj: Workout = JSON.parse(String(workoutString));
 
-  const [exercises, setExercises] = React.useState<typeof Exercise[]>(workoutObj.exercise);
+  const [exercises, setExercises] = React.useState<Exercise[]>(workoutObj.exercise);
   let [fontsLoaded] = useFonts({
     Nunito_400Regular,
     Nunito_300Light,
     Nunito_700Bold
   });
+
+  const client = new Client()
+    .setEndpoint('https://cloud.appwrite.io/v1') // Your API Endpoint
+    .setProject('66428f1f00157e6777fa'); // Your project ID
+  const databases = new Databases(client);
+  const account = new Account(client);
+
+  async function sendtoDB2() {
+
+    try {
+      await databases.createDocument(
+        '66428ffb001998f7402f', // databaseId
+        '66aaf641000f9a099fa2', // collectionId
+        ID.unique(), // documentId
+        workoutObj // data
+      )
+      router.push({ pathname: "/home" });
+
+    } catch (error) {
+      console.log(error);
+      // TODO: Create either a page or message that tells the user that the workout could not be created. Allow them
+      // to recreate the workout.
+    }
+
+  }
 
   // const [hideExercise, setHideExercise] = React.useState(Array(exercisesObj.exercise.length).fill(false));
 
@@ -53,6 +81,7 @@ const review_workout = () => {
 
           ))}
         </ScrollView>
+        <Button title="POST TO DB2" onPress={() => sendtoDB2()} />
         {/* Current Steps */}
         <StepCounter current_step={4}></StepCounter>
       </View>

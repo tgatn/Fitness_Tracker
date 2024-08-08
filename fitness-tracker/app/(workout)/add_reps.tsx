@@ -18,7 +18,7 @@ const add_reps = () => {
 
   const workoutObj = JSON.parse(String(workoutStr));
 
-  const [exercises, setExercises] = React.useState<typeof Exercise[]>(workoutObj.exercise);
+  const [exercises, setExercises] = React.useState<Exercise[]>(workoutObj.exercise);
 
   const [hideExercise, setHideExercise] = React.useState(Array(workoutObj.exercise.length).fill(false));
 
@@ -72,13 +72,24 @@ const add_reps = () => {
     // Clear workoutObj exercises if not empty
     workoutObj.exercise = [];
 
-    list_of_exercises.map(e => {
+
+    // Change attributes from a string to a number
+    const newExercises = list_of_exercises;
+    newExercises.map(e => {
+      e.workoutSet.map(wS => {
+        wS.repetition = Number(wS.repetition)
+        wS.restTime = Number(wS.restTime)
+        wS.weight = Number(wS.weight)
+      })
+    })
+
+    newExercises.map(e => {
       workoutObj.exercise.push(e);
     })
 
     const workoutObjStr = JSON.stringify(workoutObj); // converts JSON to string
 
-    console.log(workoutObj);
+    console.log("WORKOUT OBJECT IN ADD REPS: ", workoutObj);
 
     (Platform.OS === "web") ? localStorage.setItem("Workout", workoutObjStr) : SecureStore.setItem("Workout", workoutObjStr);
     router.push({ pathname: "/(workout)/review_workout" });
